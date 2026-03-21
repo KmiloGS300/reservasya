@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true">
+
+  <div class="login-container">
+
+    <div class="login-card">
+
+      <h1 class="title">Crear<span>Cuenta</span></h1>
+      <p class="subtitle">Regístrate en ReservasYa</p>
+
+      <!-- Nombre -->
+      <ion-item lines="none" class="input-item">
+        <ion-input 
+          placeholder="Nombre completo"
+          [(ngModel)]="nombre">
+        </ion-input>
+      </ion-item>
+
+      <!-- Email -->
+      <ion-item lines="none" class="input-item">
+        <ion-input 
+          type="email"
+          placeholder="Correo electrónico"
+          [(ngModel)]="email">
+        </ion-input>
+      </ion-item>
+
+      <!-- Password -->
+      <ion-item lines="none" class="input-item">
+        <ion-input 
+          type="password"
+          placeholder="Contraseña"
+          [(ngModel)]="password">
+        </ion-input>
+      </ion-item>
+
+      <!-- Botón -->
+      <ion-button expand="block" class="btn-login" (click)="register()">
+        Crear cuenta
+      </ion-button>
+
+      <!-- Volver -->
+      <p class="register-text">
+        ¿Ya tienes cuenta?
+        <span class="register-link" (click)="irLogin()">
+          Inicia sesión
+        </span>
+      </p>
+
+    </div>
+
+  </div>
+
+</ion-content>
