@@ -1,0 +1,21 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Confirmación</h1>
+
+      <p><strong>Fecha:</strong> {{ reservation.date }}</p>
+      <p><strong>Hora:</strong> {{ reservation.time }}</p>
+      <p><strong>Mesa:</strong> {{ reservation.table.id }}</p>
+
+      <ion-button expand="block" class="btn-primary" (click)="confirmReservation()">
+        Confirmar
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</ion-content>

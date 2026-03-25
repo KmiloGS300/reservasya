@@ -18,7 +18,7 @@ import { PagesModule } from './pages/pages-module';
             AppRoutingModule, 
             FormsModule, 
             AuthModule, 
-            PagesModule],
+            PagesModule,],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

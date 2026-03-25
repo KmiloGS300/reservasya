@@ -1,0 +1,27 @@
+ion-content {
+  --background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 90%;
+  max-width: 350px;
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  text-align: center;
+}
+
+.btn-primary {
+  margin-top: 20px;
+  --background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+  border-radius: 12px;
+}

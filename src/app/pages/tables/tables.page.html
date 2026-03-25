@@ -1,0 +1,27 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Mesas</h1>
+      <p class="subtitle">Selecciona una mesa</p>
+
+      <div class="grid">
+
+        <div 
+          class="table-card"
+          *ngFor="let table of tables"
+          (click)="selectTable(table)"
+        >
+          <h2>Mesa {{ table.id }}</h2>
+          <p>{{ table.capacity }} personas</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

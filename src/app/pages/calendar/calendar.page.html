@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Reservar<span>Ya</span></h1>
+      <p class="subtitle">Selecciona una fecha</p>
+
+      <ion-item lines="none" class="input-item">
+        <ion-datetime 
+          presentation="date"
+          (ionChange)="selectDate($event)">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-button expand="block" class="btn-primary">
+        Continuar
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</ion-content>

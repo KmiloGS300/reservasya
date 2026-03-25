@@ -1,0 +1,19 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Reservas</h1>
+
+      <div class="reservation-card" *ngFor="let reservation of reservations">
+        <h2>{{ reservation.name }}</h2>
+        <p>{{ reservation.date }} - {{ reservation.time }}</p>
+        <p>Mesa {{ reservation.table }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

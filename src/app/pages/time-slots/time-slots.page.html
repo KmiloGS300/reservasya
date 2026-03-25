@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Horarios</h1>
+      <p class="subtitle">Selecciona una hora</p>
+
+      <div class="grid">
+        <ion-button 
+          *ngFor="let time of timeSlots"
+          (click)="selectTime(time)">
+          {{ time }}
+        </ion-button>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

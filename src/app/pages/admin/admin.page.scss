@@ -1,0 +1,19 @@
+ion-content {
+  --background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  padding: 20px;
+}
+
+.reservation-card {
+  background: rgba(255,255,255,0.08);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
