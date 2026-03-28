@@ -1,11 +1,20 @@
 import { Component } from '@angular/core';
+import { DatabaseService } from './services/database';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  standalone: false,
+  standalone: false
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private platform: Platform, private dbService: DatabaseService) {
+    this.initializeApp();
+  }
+
+  async initializeApp() {
+    await this.platform.ready();
+    await this.dbService.initDB();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReservationService } from 'src/app/services/reservation';
 
@@ -8,15 +8,30 @@ import { ReservationService } from 'src/app/services/reservation';
   styleUrls: ['./time-slots.page.scss'],
   standalone: false
 })
-export class TimeSlotsPage {
+export class TimeSlotsPage implements OnInit {
 
   timeSlots: string[] = [];
+  availableTimeSlots: string[] = [];
+  selectedDate: string = '';
 
   constructor(
     private router: Router,
     private reservationService: ReservationService
-  ) {
+  ) {}
+
+  ngOnInit() {
+    this.selectedDate = this.reservationService.getReservation().date;
+
+    // Generar horarios completos
     this.generateTimeSlots();
+
+    // Filtrar horarios reservados
+    const reservations = this.reservationService.getReservations();
+    const reservedTimes = reservations
+      .filter(r => r.date === this.selectedDate)
+      .map(r => r.time);
+
+    this.availableTimeSlots = this.timeSlots.filter(t => !reservedTimes.includes(t));
   }
 
   generateTimeSlots() {
@@ -31,7 +46,16 @@ export class TimeSlotsPage {
   }
 
   selectTime(time: string) {
-  this.reservationService.setTime(time);
-  this.router.navigate(['/customer-data']); // 👈 CAMBIO
-}
+    if (!time) {
+      alert('Selecciona un horario válido ⏰');
+      return;
+    }
+
+    this.reservationService.setTime(time);
+    this.router.navigate(['/customer-data']);
+  }
+
+  isReserved(time: string): boolean {
+    return !this.availableTimeSlots.includes(time);
+  }
 }

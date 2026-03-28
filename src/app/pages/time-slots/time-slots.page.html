@@ -10,7 +10,9 @@
       <div class="grid">
         <ion-button 
           *ngFor="let time of timeSlots"
-          (click)="selectTime(time)">
+          (click)="selectTime(time)"
+          [disabled]="isReserved(time)"
+          [style.opacity]="isReserved(time) ? 0.4 : 1">
           {{ time }}
         </ion-button>
       </div>

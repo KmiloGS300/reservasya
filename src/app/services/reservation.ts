@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 export interface Reservation {
   date: string;
   time: string;
+  table: any;
   people: number;
   customerName: string;
   phone: string;
@@ -17,6 +18,7 @@ export class ReservationService {
   private reservation: Reservation = {
     date: '',
     time: '',
+    table: null,
     people: 0,
     customerName: '',
     phone: '',
@@ -34,6 +36,10 @@ export class ReservationService {
     this.reservation.time = time;
   }
 
+  setTable(table: any) {
+    this.reservation.table = table;
+  }
+
   setCustomerData(name: string, people: number, phone: string, email: string) {
     this.reservation.customerName = name;
     this.reservation.people = people;
@@ -48,7 +54,7 @@ export class ReservationService {
 
   // 💾 SAVE
   saveReservation() {
-    const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+    let reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
 
     reservations.push({ ...this.reservation });
 
@@ -67,6 +73,7 @@ export class ReservationService {
     this.reservation = {
       date: '',
       time: '',
+      table: null,
       people: 0,
       customerName: '',
       phone: '',
