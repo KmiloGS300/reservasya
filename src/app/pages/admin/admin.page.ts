@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
+import { ReservationService, Reservation } from 'src/app/services/reservation';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
   standalone: false
-
 })
 export class AdminPage {
 
-  reservations = [
-    {
-      name: 'John',
-      date: '2026-03-25',
-      time: '18:00',
-      table: 2
-    }
-  ];
+  reservations: Reservation[] = [];
 
+  constructor(private reservationService: ReservationService) {}
+
+  ngOnInit() {
+    this.reservations = this.reservationService.getReservations();
+  }
 }

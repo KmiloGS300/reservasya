@@ -31,7 +31,7 @@ export class LoginComponent {
 
   // 👇 ESTE VA FUERA DEL login()
   irRegistro() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/auth/register']);
   }
 
 }

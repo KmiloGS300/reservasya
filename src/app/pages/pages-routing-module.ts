@@ -11,8 +11,8 @@ const routes: Routes = [
     loadChildren: () => import('./time-slots/time-slots.module').then(m => m.TimeSlotsPageModule)
   },
   {
-    path: 'tables',
-    loadChildren: () => import('./tables/tables.module').then(m => m.TablesPageModule)
+    path: 'customer-data',
+    loadChildren: () => import('./customer-data/customer-data.module').then(m => m.CustomerDataPageModule)
   },
   {
     path: 'confirmation',

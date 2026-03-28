@@ -1,0 +1,38 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Reservas<span>Ya</span></h1>
+      <p class="subtitle">Ingresa tus datos</p>
+
+      <ion-item lines="none" class="input-item">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="reservation.name"></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item">
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input [(ngModel)]="reservation.phone"></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item">
+        <ion-label position="floating">Correo</ion-label>
+        <ion-input [(ngModel)]="reservation.email"></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item">
+        <ion-label position="floating">Personas</ion-label>
+        <ion-input type="number" [(ngModel)]="reservation.people"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" class="btn-primary" (click)="continue()">
+        Confirmar
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</ion-content>
