@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DatabaseService } from './database'; // 🔥 IMPORTANTE
+import { Storage } from '@ionic/storage-angular';
 
 export interface Reservation {
+  id?: number;
   date: string;
   time: string;
   table: any;
@@ -16,6 +17,8 @@ export interface Reservation {
 })
 export class ReservationService {
 
+  private _storage: Storage | null = null;
+
   private reservation: Reservation = {
     date: '',
     time: '',
@@ -26,7 +29,13 @@ export class ReservationService {
     email: ''
   };
 
-  constructor(private dbService: DatabaseService) {} // 🔥 INYECCIÓN
+  constructor(private storage: Storage) {
+    this.init();
+  }
+
+  async init() {
+    this._storage = await this.storage.create();
+  }
 
   // 🧱 SETTERS
   setDate(date: string) {
@@ -48,45 +57,28 @@ export class ReservationService {
     this.reservation.email = email;
   }
 
-  // 📤 GET
+  // 📤 GET ACTUAL
   getReservation(): Reservation {
     return this.reservation;
   }
 
-  // 💾 SAVE en SQLite
+  // 💾 GUARDAR EN STORAGE
   async saveReservation(): Promise<boolean> {
     try {
-      await this.dbService.initDB();
 
-      // Crear tabla si no existe
-      await this.dbService.db.execute(`
-        CREATE TABLE IF NOT EXISTS reservas (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          date TEXT,
-          time TEXT,
-          tableNumber TEXT,
-          people INTEGER,
-          customerName TEXT,
-          phone TEXT,
-          email TEXT
-        );
-      `);
+      const reservations = (await this._storage?.get('reservations')) || [];
 
-      await this.dbService.db.run(
-        `INSERT INTO reservas (date, time, tableNumber, people, customerName, phone, email)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [
-          this.reservation.date,
-          this.reservation.time,
-          JSON.stringify(this.reservation.table), // 👈 por si es objeto
-          this.reservation.people,
-          this.reservation.customerName,
-          this.reservation.phone,
-          this.reservation.email
-        ]
-      );
+      const newReservation: Reservation = {
+        ...this.reservation,
+        id: new Date().getTime() // 🔥 ID único
+      };
+
+      reservations.push(newReservation);
+
+      await this._storage?.set('reservations', reservations);
 
       this.clearReservation();
+
       return true;
 
     } catch (err) {
@@ -95,40 +87,29 @@ export class ReservationService {
     }
   }
 
-  // 📊 OBTENER RESERVAS
+  // 📊 OBTENER TODAS
   async getReservations(): Promise<Reservation[]> {
-    try {
-      await this.dbService.initDB();
-
-      const res = await this.dbService.db.query(`SELECT * FROM reservas`);
-
-      return (res.values || []).map((r: any) => ({
-        ...r,
-        table: JSON.parse(r.tableNumber || 'null')
-      }));
-
-    } catch (err) {
-      console.error('Error obteniendo reservas:', err);
-      return [];
-    }
+    return (await this._storage?.get('reservations')) || [];
   }
 
-  // 🗑️ DELETE
-  async deleteReservation(reserva: any) {
+  // 🗑️ ELIMINAR
+  async deleteReservation(reserva: Reservation) {
     try {
-      await this.dbService.initDB();
 
-      await this.dbService.db.run(
-        `DELETE FROM reservas WHERE email = ? AND date = ? AND time = ?`,
-        [reserva.email, reserva.date, reserva.time]
+      let reservations = (await this._storage?.get('reservations')) || [];
+
+      reservations = reservations.filter(
+        (r: Reservation) => r.id !== reserva.id
       );
+
+      await this._storage?.set('reservations', reservations);
 
     } catch (err) {
       console.error('Error eliminando reserva:', err);
     }
   }
 
-  // 🧹 CLEAR
+  // 🧹 LIMPIAR
   clearReservation() {
     this.reservation = {
       date: '',

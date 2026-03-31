@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage-angular'; // 👈
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { PagesModule } from './pages/pages.module'; // 👈 IMPORTANTE
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +17,8 @@ import { PagesModule } from './pages/pages.module'; // 👈 IMPORTANTE
     IonicModule.forRoot(),
     AppRoutingModule,
     FormsModule,
-    PagesModule // 👈 IMPORTANTE
+    PagesModule,
+    IonicStorageModule.forRoot() // 👈
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

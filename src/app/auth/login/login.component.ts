@@ -1,9 +1,9 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatabaseService } from '../../services/database';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
@@ -18,76 +18,56 @@ export class LoginComponent {
   password: string = '';
   showPassword: boolean = false;
 
-  // 🔹 MODALES
   showSuccessModal: boolean = false;
   showFailModal: boolean = false;
   failMessage: string = '';
 
-  // 🔹 ERRORES
   emailError: string = '';
   passwordError: string = '';
 
   constructor(
     private router: Router,
-    private dbService: DatabaseService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private auth: AuthService
   ) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
-  // 🔥 VALIDACIÓN EN TIEMPO REAL
   validateFields() {
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // EMAIL
-    if (!this.email) {
-      this.emailError = 'Ingresa tu correo';
-    } else if (!emailRegex.test(this.email)) {
-      this.emailError = 'Correo inválido';
-    } else {
-      this.emailError = '';
-    }
+    this.emailError = !this.email
+      ? 'Ingresa tu correo'
+      : !emailRegex.test(this.email)
+      ? 'Correo inválido'
+      : '';
 
-    // PASSWORD
-    if (!this.password) {
-      this.passwordError = 'Ingresa tu contraseña';
-    } else if (this.password.length < 4) {
-      this.passwordError = 'Mínimo 4 caracteres';
-    } else {
-      this.passwordError = '';
-    }
+    this.passwordError = !this.password
+      ? 'Ingresa tu contraseña'
+      : this.password.length < 4
+      ? 'Mínimo 4 caracteres'
+      : '';
   }
 
-  // 🔥 ACTIVAR BOTÓN
   isFormValid(): boolean {
-    return (
-      this.email !== '' &&
-      this.password !== '' &&
-      !this.emailError &&
-      !this.passwordError
-    );
+    return this.email !== '' &&
+           this.password !== '' &&
+           !this.emailError &&
+           !this.passwordError;
   }
 
   async login() {
 
-    // 🔥 VALIDAR ANTES DE TODO
     this.validateFields();
     if (!this.isFormValid()) return;
 
     try {
-      await this.dbService.initDB();
-      const usuarios = await this.dbService.getUser(this.email);
 
-      const validUser =
-        (usuarios.length > 0 && usuarios[0].password === this.password) ||
-        (this.email === 'admin@gmail.com' && this.password === '1234');
+      const ok = await this.auth.login(this.email, this.password);
 
-      if (validUser) {
-
-        // 🔹 MODAL ÉXITO
+      if (ok) {
         this.showSuccessModal = true;
         this.cd.detectChanges();
 
@@ -101,7 +81,6 @@ export class LoginComponent {
       }
 
     } catch (err) {
-      console.error('Error al iniciar sesión:', err);
       this.triggerFailModal('Error al iniciar sesión ❌');
     }
   }
@@ -121,5 +100,4 @@ export class LoginComponent {
   irRegistro() {
     this.router.navigate(['/auth/register']);
   }
-
 }
