@@ -8,9 +8,11 @@ import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacito
 export class DatabaseService {
 
   private sqlite!: SQLiteConnection;
-  private db!: SQLiteDBConnection;
+  public db!: SQLiteDBConnection;
   private isNative: boolean = false;
-  private webUsers: any[] = []; // fallback para web
+
+  private webUsers: any[] = [];
+  private webReservations: any[] = [];
 
   constructor() {
     this.isNative = Capacitor.isNativePlatform();
@@ -32,8 +34,10 @@ export class DatabaseService {
       1,
       false
     );
+
     await this.db.open();
 
+    // 👤 USUARIOS
     await this.db.execute(`
       CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,14 +46,38 @@ export class DatabaseService {
         password TEXT
       );
     `);
-    console.log('DB lista ✅');
+
+    // 📅 RESERVAS
+    await this.db.execute(`
+      CREATE TABLE IF NOT EXISTS reservas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT,
+        time TEXT,
+        tableNumber TEXT,
+        people INTEGER,
+        customerName TEXT,
+        phone TEXT,
+        email TEXT
+      );
+    `);
+
+    console.log('DB lista con usuarios y reservas ✅');
   }
+
+  // =========================
+  // 👤 USUARIOS
+  // =========================
 
   async getUser(email: string) {
     if (!this.isNative) {
       return this.webUsers.filter(u => u.email === email);
     }
-    const res = await this.db.query(`SELECT * FROM usuarios WHERE email = ?`, [email]);
+
+    const res = await this.db.query(
+      `SELECT * FROM usuarios WHERE email = ?`,
+      [email]
+    );
+
     return res.values || [];
   }
 
@@ -58,9 +86,62 @@ export class DatabaseService {
       this.webUsers.push({ nombre, email, password });
       return;
     }
+
     await this.db.run(
       `INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)`,
       [nombre, email, password]
+    );
+  }
+
+  // =========================
+  // 📅 RESERVAS
+  // =========================
+
+  async addReservation(reserva: any) {
+    if (!this.isNative) {
+      this.webReservations.push(reserva);
+      return;
+    }
+
+    await this.db.run(
+      `INSERT INTO reservas (date, time, tableNumber, people, customerName, phone, email)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        reserva.date,
+        reserva.time,
+        JSON.stringify(reserva.table),
+        reserva.people,
+        reserva.customerName,
+        reserva.phone,
+        reserva.email
+      ]
+    );
+  }
+
+  async getReservations() {
+    if (!this.isNative) {
+      return this.webReservations;
+    }
+
+    const res = await this.db.query(`SELECT * FROM reservas`);
+
+    return (res.values || []).map((r: any) => ({
+      ...r,
+      table: JSON.parse(r.tableNumber || 'null')
+    }));
+  }
+
+  async deleteReservation(reserva: any) {
+    if (!this.isNative) {
+      this.webReservations = this.webReservations.filter(r =>
+        !(r.email === reserva.email && r.date === reserva.date && r.time === reserva.time)
+      );
+      return;
+    }
+
+    await this.db.run(
+      `DELETE FROM reservas WHERE email = ? AND date = ? AND time = ?`,
+      [reserva.email, reserva.date, reserva.time]
     );
   }
 }

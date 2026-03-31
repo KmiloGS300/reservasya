@@ -39,12 +39,27 @@
         <span class="value">{{ reservation.people }}</span>
       </div>
 
-      <ion-button expand="block" class="btn-primary">
+      <ion-button 
+        expand="block" 
+        class="btn-primary"
+        (click)="confirmReservation()">
         Confirmar
       </ion-button>
 
     </div>
 
+  </div>
+
+  <!-- 🔥 MODAL ÉXITO -->
+  <div class="success-modal" *ngIf="showModal">
+    <div class="modal-card">
+
+      <div class="check">✔</div>
+
+      <h2>Reserva creada</h2>
+      <p>Tu reserva fue registrada exitosamente</p>
+
+    </div>
   </div>
 
 </ion-content>

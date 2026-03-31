@@ -10,12 +10,20 @@
       <ion-item lines="none" class="input-item">
         <ion-datetime 
           presentation="date"
-          (ionChange)="selectDate($event)">
+          [min]="minDate"
+          [max]="maxDate"
+          [(ngModel)]="selectedDate">
         </ion-datetime>
       </ion-item>
 
-      <ion-button expand="block" class="btn-primary">
+      <ion-button 
+        expand="block" 
+        class="btn-primary"
+        [disabled]="!selectedDate"
+        (click)="continue()">
+
         Continuar
+
       </ion-button>
 
     </div>

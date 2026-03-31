@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReservationService, Reservation } from 'src/app/services/reservation';
 
@@ -8,9 +8,12 @@ import { ReservationService, Reservation } from 'src/app/services/reservation';
   styleUrls: ['./confirmation.page.scss'],
   standalone: false
 })
-export class ConfirmationPage {
+export class ConfirmationPage implements OnInit {
 
   reservation!: Reservation;
+
+  // 🔥 CONTROL DEL MODAL
+  showModal: boolean = false;
 
   constructor(
     private router: Router,
@@ -18,11 +21,16 @@ export class ConfirmationPage {
   ) {}
 
   ngOnInit() {
-    // 🔥 Trae todos los datos guardados
     this.reservation = this.reservationService.getReservation();
+
+    // 🔴 Validar que exista reserva
+    if (!this.reservation) {
+      this.router.navigate(['/']);
+      return;
+    }
   }
 
-  // 🔥 FORMATEAR FECHA (IMPORTANTE)
+  // 🔥 FORMATEAR FECHA
   formatDate(date: string): string {
     if (!date) return '';
 
@@ -35,24 +43,67 @@ export class ConfirmationPage {
     return `${day}/${month}/${year}`;
   }
 
+  // 🔥 VALIDAR DATOS COMPLETOS
+  isValidReservation(): boolean {
+
+    // 🔴 Fecha
+    if (!this.reservation.date || isNaN(new Date(this.reservation.date).getTime())) {
+      return false;
+    }
+
+    // 🔴 Hora
+    if (!this.reservation.time) {
+      return false;
+    }
+
+    // 🔴 Nombre
+    if (!this.reservation.customerName || this.reservation.customerName.trim().length < 3) {
+      return false;
+    }
+
+    // 🔴 Teléfono
+    if (!this.reservation.phone || !/^[0-9]{7,15}$/.test(this.reservation.phone)) {
+      return false;
+    }
+
+    // 🔴 Email (opcional pero válido)
+    if (this.reservation.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.reservation.email)) {
+      return false;
+    }
+
+    // 🔴 Personas
+    if (!this.reservation.people || this.reservation.people < 1) {
+      return false;
+    }
+
+    return true;
+  }
+
   // 🔥 CONFIRMAR RESERVA
   async confirmReservation() {
 
-    // 👉 Validación básica (opcional pero pro)
-    if (!this.reservation.customerName || !this.reservation.phone) {
-      alert('Faltan datos del cliente');
+    // ❌ Validación completa
+    if (!this.isValidReservation()) {
+      alert('Datos incompletos o inválidos ❌');
       return;
     }
 
+    // 💾 Guardar
     await this.reservationService.saveReservation();
 
     console.log('Reserva guardada:', this.reservation);
 
+    // 🧹 Limpiar
     this.reservationService.clearReservation();
 
-    alert('Reserva confirmada ✅');
+    // 🔥 MODAL BONITO
+    this.showModal = true;
 
-    this.router.navigate(['/']);
+    // ⏳ ESPERA + REDIRECCIÓN
+    setTimeout(() => {
+      this.showModal = false;
+      this.router.navigate(['/home-reservasya'], { replaceUrl: true });
+    }, 2000);
   }
 
 }

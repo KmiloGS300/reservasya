@@ -13,7 +13,7 @@ export class AdminPage {
 
   constructor(private reservationService: ReservationService) {}
 
-  ngOnInit() {
-    this.reservations = this.reservationService.getReservations();
+  async ngOnInit() {
+    this.reservations = await this.reservationService.getReservations();
   }
 }

@@ -7,28 +7,75 @@
       <h1 class="title">Reservas<span>Ya</span></h1>
       <p class="subtitle">Ingresa tus datos</p>
 
+      <!-- 👤 NOMBRE -->
       <ion-item lines="none" class="input-item">
         <ion-label position="floating">Nombre</ion-label>
-        <ion-input [(ngModel)]="reservation.name"></ion-input>
+        <ion-input 
+          [(ngModel)]="reservation.name"
+          name="name"
+          #name="ngModel"
+          required
+          minlength="3">
+        </ion-input>
       </ion-item>
+      <div class="error" *ngIf="name.invalid && name.touched">
+        Mínimo 3 caracteres
+      </div>
 
+      <!-- 📞 TELÉFONO -->
       <ion-item lines="none" class="input-item">
         <ion-label position="floating">Teléfono</ion-label>
-        <ion-input [(ngModel)]="reservation.phone"></ion-input>
+        <ion-input 
+          [(ngModel)]="reservation.phone"
+          name="phone"
+          #phone="ngModel"
+          required
+          pattern="^[0-9]{7,15}$">
+        </ion-input>
       </ion-item>
+      <div class="error" *ngIf="phone.invalid && phone.touched">
+        Solo números (7-15 dígitos)
+      </div>
 
+      <!-- 📧 EMAIL -->
       <ion-item lines="none" class="input-item">
         <ion-label position="floating">Correo</ion-label>
-        <ion-input [(ngModel)]="reservation.email"></ion-input>
+        <ion-input 
+          [(ngModel)]="reservation.email"
+          name="email"
+          #email="ngModel"
+          email>
+        </ion-input>
       </ion-item>
+      <div class="error" *ngIf="email.invalid && email.touched">
+        Correo no válido
+      </div>
 
+      <!-- 👥 PERSONAS -->
       <ion-item lines="none" class="input-item">
         <ion-label position="floating">Personas</ion-label>
-        <ion-input type="number" [(ngModel)]="reservation.people"></ion-input>
+        <ion-input 
+          type="number"
+          [(ngModel)]="reservation.people"
+          name="people"
+          #people="ngModel"
+          required
+          min="1">
+        </ion-input>
       </ion-item>
+      <div class="error" *ngIf="people.invalid && people.touched">
+        Mínimo 1 persona
+      </div>
 
-      <ion-button expand="block" class="btn-primary" (click)="continue()">
+      <!-- 🔥 BOTÓN -->
+      <ion-button 
+        expand="block" 
+        class="btn-primary"
+        [disabled]="name.invalid || phone.invalid || email.invalid || people.invalid"
+        (click)="continue()">
+
         Confirmar
+
       </ion-button>
 
     </div>

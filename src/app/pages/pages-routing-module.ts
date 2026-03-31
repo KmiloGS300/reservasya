@@ -26,6 +26,18 @@ const routes: Routes = [
     path: '',
     redirectTo: 'calendar',
     pathMatch: 'full'
+  },
+  {
+  path: 'home-reservasya',
+  loadChildren: () => import('./home-reservasya/home-reservasya.module').then(m => m.HomeReservasyaPageModule)
+  },
+  {
+    path: 'manage-reservations',
+    loadChildren: () => import('./manage-reservations/manage-reservations.module').then(m => m.ManageReservationsPageModule)
+  },
+  {
+    path: 'reservation-detail',
+    loadChildren: () => import('./reservation-detail/reservation-detail.module').then(m => m.ReservationDetailPageModule)
   }
 ];
 

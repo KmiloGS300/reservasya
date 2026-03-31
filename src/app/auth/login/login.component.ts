@@ -8,60 +8,67 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone: true,           // ✅ Ahora es standalone
-  imports: [IonicModule, FormsModule] // ✅ Para ngModel y componentes Ionic
+  standalone: true,
+  imports: [IonicModule, FormsModule]
 })
 export class LoginComponent {
 
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router, private dbService: DatabaseService) {}
+  showPassword: boolean = false;
+  isLoading: boolean = false;
+
+  constructor(
+    private router: Router,
+    private dbService: DatabaseService
+  ) {}
+
+  // 👁 Mostrar / ocultar contraseña
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   async login() {
-    console.log('Botón Login presionado'); // Debug
 
-    // Validaciones básicas
-    if (!this.email || !this.password) {
-      alert('Completa todos los campos');
-      return;
-    }
+    // 🔴 Validaciones (refuerzo)
+    if (!this.email || !this.password) return;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.email)) {
-      alert('Ingresa un correo válido');
-      return;
-    }
+    if (!emailRegex.test(this.email)) return;
 
-    if (this.password.length < 4) {
-      alert('La contraseña debe tener al menos 4 caracteres');
-      return;
-    }
+    if (this.password.length < 4) return;
+
+    this.isLoading = true;
+
+    // ⏳ Simular carga (2 segundos)
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     try {
-      // Inicializar DB (por si no se hizo antes)
       await this.dbService.initDB();
 
-      // Obtener usuario desde SQLite
       const usuarios = await this.dbService.getUser(this.email);
 
+      // ✅ Usuario desde DB
       if (usuarios.length > 0 && usuarios[0].password === this.password) {
-        alert('Bienvenido 🔥');
-        this.router.navigate(['/pages']); // Ruta después del login
+        this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
         return;
       }
 
-      // Usuario admin de prueba
+      // ✅ Admin fallback
       if (this.email === 'admin@gmail.com' && this.password === '1234') {
-        alert('Bienvenido 🔥');
-        this.router.navigate(['/pages']);
-      } else {
-        alert('Credenciales incorrectas ❌');
+        this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
+        return;
       }
+
+      // ❌ Error
+      alert('Credenciales incorrectas ❌');
 
     } catch (err) {
       console.error('Error al iniciar sesión:', err);
       alert('Error al iniciar sesión ❌');
+    } finally {
+      this.isLoading = false;
     }
   }
 

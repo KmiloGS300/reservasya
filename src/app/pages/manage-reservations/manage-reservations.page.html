@@ -1,0 +1,36 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Gestionar<span>Ya</span></h1>
+      <p class="subtitle">Busca y selecciona una reserva</p>
+
+      <ion-item lines="none" class="input-item">
+        <ion-input 
+          placeholder="Buscar por nombre o email"
+          [(ngModel)]="searchTerm"
+          (ionInput)="buscar()">
+        </ion-input>
+      </ion-item>
+
+      <ion-list class="custom-list">
+        <ion-item 
+          *ngFor="let r of reservasFiltradas" 
+          (click)="verReserva(r)"
+          class="list-item">
+
+          <ion-label>
+            <h2>{{ r.customerName }}</h2>
+            <p>{{ r.date }} - {{ r.time }}</p>
+          </ion-label>
+
+        </ion-item>
+      </ion-list>
+
+    </div>
+
+  </div>
+
+</ion-content>

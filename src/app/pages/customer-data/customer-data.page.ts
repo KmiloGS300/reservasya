@@ -14,7 +14,7 @@ export class CustomerDataPage {
     name: '',
     phone: '',
     email: '',
-    people: 0
+    people: 1
   };
 
   constructor(
@@ -24,18 +24,41 @@ export class CustomerDataPage {
 
   continue() {
 
-    if (!this.reservation.name || !this.reservation.phone) {
-      alert('Completa los datos');
+    // 🔴 Seguridad extra (por si alguien fuerza el botón)
+    if (!this.reservation.name || this.reservation.name.trim().length < 3) {
       return;
     }
 
+    if (!this.reservation.phone || !/^[0-9]{7,15}$/.test(this.reservation.phone)) {
+      return;
+    }
+
+    if (this.reservation.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.reservation.email)) {
+      return;
+    }
+
+    if (!this.reservation.people || this.reservation.people < 1) {
+      return;
+    }
+
+    // 🧹 Limpiar datos
+    const cleanData = {
+      name: this.reservation.name.trim(),
+      phone: this.reservation.phone,
+      email: this.reservation.email ? this.reservation.email.trim() : '',
+      people: this.reservation.people
+    };
+
+    // 💾 Guardar
     this.reservationService.setCustomerData(
-      this.reservation.name,
-      this.reservation.people,
-      this.reservation.phone,
-      this.reservation.email
+      cleanData.name,
+      cleanData.people,
+      cleanData.phone,
+      cleanData.email
     );
 
+    // 🚀 Navegar
     this.router.navigate(['/pages/confirmation']);
   }
+
 }

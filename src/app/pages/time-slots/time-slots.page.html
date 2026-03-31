@@ -8,13 +8,34 @@
       <p class="subtitle">Selecciona una hora</p>
 
       <div class="grid">
+
         <ion-button 
           *ngFor="let time of timeSlots"
           (click)="selectTime(time)"
-          [disabled]="isReserved(time)"
-          [style.opacity]="isReserved(time) ? 0.4 : 1">
-          {{ time }}
+          [disabled]="isDisabled(time)"
+          [ngClass]="{
+            'reserved': isReserved(time),
+            'past': isPast(time),
+            'selected': selectedTime === time
+          }">
+
+          <!-- 🔴 OCUPADO -->
+          <span *ngIf="isReserved(time)">
+            Ocupado
+          </span>
+
+          <!-- ⚫ NO DISPONIBLE -->
+          <span *ngIf="!isReserved(time) && isPast(time)">
+            No disp.
+          </span>
+
+          <!-- 🟢 DISPONIBLE -->
+          <span *ngIf="!isReserved(time) && !isPast(time)">
+            {{ time }}
+          </span>
+
         </ion-button>
+
       </div>
 
     </div>

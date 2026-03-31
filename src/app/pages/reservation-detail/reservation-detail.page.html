@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1 class="title">Reserva<span>Ya</span></h1>
+      <p class="subtitle">Detalle de la reserva</p>
+
+      <div class="row">
+        <span class="label">👤 Nombre</span>
+        <span class="value">{{ reserva?.customerName }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">📅 Fecha</span>
+        <span class="value">{{ reserva?.date }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">⏰ Hora</span>
+        <span class="value">{{ reserva?.time }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">👥 Personas</span>
+        <span class="value">{{ reserva?.people }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">📞 Teléfono</span>
+        <span class="value">{{ reserva?.phone }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">📧 Email</span>
+        <span class="value">{{ reserva?.email }}</span>
+      </div>
+
+      <ion-button expand="block" class="btn-primary" (click)="editar()">
+        ✏️ Modificar
+      </ion-button>
+
+      <ion-button expand="block" color="danger" (click)="eliminar()">
+        🗑️ Eliminar
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</ion-content>

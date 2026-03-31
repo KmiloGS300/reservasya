@@ -1,0 +1,79 @@
+/* 🔥 FONDO */
+ion-content {
+  --background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: white;
+}
+
+/* 🔥 CONTENEDOR */
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+/* 🔥 CARD */
+.card {
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 🔥 TITULO */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.title span {
+  color: #38bdf8;
+}
+
+/* 🔥 SUBTITULO */
+.subtitle {
+  font-size: 14px;
+  text-align: center;
+  color: #cbd5f5;
+  margin-bottom: 15px;
+}
+
+/* 🔥 INPUT */
+.input-item {
+  --background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 15px;
+  padding: 5px 10px;
+  color: white;
+}
+
+/* 🔥 LISTA */
+.custom-list {
+  background: transparent;
+}
+
+/* 🔥 ITEM */
+.list-item {
+  --background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+/* 🔥 TEXTO */
+.list-item h2 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.list-item p {
+  font-size: 13px;
+  color: #cbd5f5;
+}
