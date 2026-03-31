@@ -1,46 +1,76 @@
 <ion-content [fullscreen]="true">
 
   <div class="login-container">
-
     <div class="login-card">
 
-      <!-- Título -->
       <h1 class="title">Reservas<span>Ya</span></h1>
       <p class="subtitle">Inicia sesión para continuar</p>
 
-      <!-- Email -->
+      <!-- EMAIL -->
       <ion-item lines="none" class="input-item">
         <ion-input 
-          type="email" 
+          type="email"
           placeholder="Correo electrónico"
-          [(ngModel)]="email">
+          [(ngModel)]="email"
+          (ionInput)="validateFields()">
         </ion-input>
       </ion-item>
+      <div class="error" *ngIf="emailError">{{ emailError }}</div>
 
-      <!-- Password -->
+      <!-- PASSWORD -->
       <ion-item lines="none" class="input-item">
         <ion-input 
-          type="password" 
+          [type]="showPassword ? 'text' : 'password'"
           placeholder="Contraseña"
-          [(ngModel)]="password">
+          [(ngModel)]="password"
+          (ionInput)="validateFields()">
         </ion-input>
-      </ion-item>
 
-      <!-- Botón -->
-      <ion-button expand="block" class="btn-login" (click)="login()">
+        <ion-icon
+          [name]="showPassword ? 'eye-off' : 'eye'"
+          slot="end"
+          (click)="togglePassword()"
+          class="password-icon">
+        </ion-icon>
+      </ion-item>
+      <div class="error" *ngIf="passwordError">{{ passwordError }}</div>
+
+      <!-- BOTÓN -->
+      <ion-button 
+        expand="block" 
+        class="btn-login"
+        (click)="login()"
+        [disabled]="!isFormValid()">
         Ingresar
       </ion-button>
 
-      <!-- Registro -->
+      <!-- REGISTRO -->
       <p class="register-text">
-        ¿ No tienes cuenta ?
+        ¿No tienes cuenta?
         <span class="register-link" (click)="irRegistro()">
           Créala
         </span>
       </p>
 
     </div>
+  </div>
 
+  <!-- MODAL ÉXITO -->
+  <div class="success-modal" *ngIf="showSuccessModal">
+    <div class="modal-card">
+      <div class="check">✔🔐</div>
+      <h2>¡Bienvenido!</h2>
+      <p>Has iniciado sesión correctamente</p>
+    </div>
+  </div>
+
+  <!-- MODAL FALLA -->
+  <div class="fail-modal" *ngIf="showFailModal">
+    <div class="modal-card">
+      <div class="check fail">❌</div>
+      <h2>Inicio de sesión fallido</h2>
+      <p>{{ failMessage }}</p>
+    </div>
   </div>
 
 </ion-content>

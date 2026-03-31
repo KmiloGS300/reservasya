@@ -1,8 +1,10 @@
+/* FONDO */
 ion-content {
-  --background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: white;
+  --background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  color: #1e293b;
 }
 
+/* CONTENEDOR */
 .container {
   height: 100%;
   display: flex;
@@ -10,51 +12,80 @@ ion-content {
   align-items: center;
 }
 
+/* CARD */
 .card {
-  width: 90%;
-  max-width: 350px;
+  width: 95%;
+  max-width: 420px;
   padding: 25px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   text-align: center;
+  animation: fadeInUp 0.4s ease;
 }
 
+/* TITULOS */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
-ion-button {
-  --background: linear-gradient(90deg, #38bdf8, #0ea5e9);
-  border-radius: 12px;
-  font-weight: bold;
-  height: 50px;
+/* BOTONES BASE */
+.grid ion-button {
+  --border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  height: 45px;
   transition: all 0.2s ease;
 }
 
-/* 🔴 OCUPADO */
-.reserved {
-  --background: rgba(239, 68, 68, 0.2) !important;
-  color: #ef4444 !important;
+/* DISPONIBLE (más oscuro que fondo) */
+.grid ion-button {
+  --background: #cbd5f5;
+  color: #1e293b;
 }
 
-/* ⚫ NO DISPONIBLE */
-.past {
-  --background: rgba(148, 163, 184, 0.2) !important;
-  color: #94a3b8 !important;
+/* HOVER */
+.grid ion-button:not(.reserved):not(.past):hover {
+  --background: #a5b4fc;
 }
 
-/* 🟢 SELECCIONADO */
-.selected {
-  transform: scale(0.95);
-  --background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+/* SELECCIONADO (VERDE 🔥) */
+.grid ion-button.selected {
+  --background: #22c55e;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
-/* 🔥 EFECTO CLICK */
-ion-button:not(.reserved):not(.past):active {
-  transform: scale(0.95);
-  opacity: 0.8;
+/* OCUPADO */
+.grid ion-button.reserved {
+  --background: #fecaca;
+  color: #b91c1c;
+}
+
+/* PASADO */
+.grid ion-button.past {
+  --background: #e5e7eb;
+  color: #9ca3af;
+}
+
+/* ANIMACIÓN */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -1,44 +1,80 @@
 <ion-content [fullscreen]="true">
 
   <div class="login-container">
-
     <div class="login-card">
 
       <h1 class="title">Crear<span>Cuenta</span></h1>
       <p class="subtitle">Regístrate en ReservasYa</p>
 
-      <!-- Nombre -->
+      <!-- NOMBRE -->
       <ion-item lines="none" class="input-item">
         <ion-input 
           placeholder="Nombre completo"
-          [(ngModel)]="nombre">
+          [(ngModel)]="nombre"
+          (ionInput)="validateFields()">
         </ion-input>
       </ion-item>
+      <div class="error" *ngIf="nombreError">{{ nombreError }}</div>
 
-      <!-- Email -->
+      <!-- EMAIL -->
       <ion-item lines="none" class="input-item">
         <ion-input 
           type="email"
           placeholder="Correo electrónico"
-          [(ngModel)]="email">
+          [(ngModel)]="email"
+          (ionInput)="validateFields()">
         </ion-input>
       </ion-item>
+      <div class="error" *ngIf="emailError">{{ emailError }}</div>
 
-      <!-- Password -->
+      <!-- PASSWORD -->
       <ion-item lines="none" class="input-item">
         <ion-input 
-          type="password"
+          [type]="showPassword ? 'text' : 'password'"
           placeholder="Contraseña"
-          [(ngModel)]="password">
+          [(ngModel)]="password"
+          (ionInput)="validateFields()">
         </ion-input>
-      </ion-item>
 
-      <!-- Botón -->
-      <ion-button expand="block" class="btn-login" (click)="register()">
+        <ion-icon
+          [name]="showPassword ? 'eye-off' : 'eye'"
+          slot="end"
+          (click)="togglePassword()"
+          class="password-icon">
+        </ion-icon>
+      </ion-item>
+      <div class="error" *ngIf="passwordError">{{ passwordError }}</div>
+
+      <!-- CONFIRMAR PASSWORD -->
+      <ion-item lines="none" class="input-item">
+        <ion-input 
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Confirmar contraseña"
+          [(ngModel)]="confirmPassword"
+          (ionInput)="validateFields()">
+        </ion-input>
+
+        <ion-icon
+          [name]="showPassword ? 'eye-off' : 'eye'"
+          slot="end"
+          (click)="togglePassword()"
+          class="password-icon">
+        </ion-icon>
+      </ion-item>
+      <div class="error" *ngIf="confirmPasswordError">
+        {{ confirmPasswordError }}
+      </div>
+
+      <!-- BOTÓN -->
+      <ion-button 
+        expand="block" 
+        class="btn-login"
+        (click)="register()"
+        [disabled]="!isFormValid()">
         Crear cuenta
       </ion-button>
-      
-      <!-- Volver -->
+
+      <!-- VOLVER -->
       <p class="register-text">
         ¿Ya tienes cuenta?
         <span class="register-link" (click)="irLogin()">
@@ -47,7 +83,24 @@
       </p>
 
     </div>
+  </div>
 
+  <!-- MODAL ÉXITO -->
+  <div class="success-modal" *ngIf="showSuccessModal">
+    <div class="modal-card">
+      <div class="check">✔🔐</div>
+      <h2>Cuenta creada</h2>
+      <p>Tu cuenta fue registrada exitosamente</p>
+    </div>
+  </div>
+
+  <!-- MODAL ERROR -->
+  <div class="fail-modal" *ngIf="showFailModal">
+    <div class="modal-card">
+      <div class="check fail">❌</div>
+      <h2>Error</h2>
+      <p>{{ failMessage }}</p>
+    </div>
   </div>
 
 </ion-content>
