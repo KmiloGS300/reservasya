@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { DatabaseService } from './services/database';
 import { Platform } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +10,24 @@ import { Platform } from '@ionic/angular';
   standalone: false
 })
 export class AppComponent {
-  constructor(private platform: Platform, private dbService: DatabaseService) {
-    this.initializeApp();
+  constructor(
+    private platform: Platform
+  ) {
+    this.platform.ready().then(() => { this.configurestatusbar(); });
   }
 
-  async initializeApp() {
-    await this.platform.ready();
-    await this.dbService.initDB();
+  //agregar status bar
+  async configurestatusbar() {
+    if (!Capacitor.isNativePlatform()) return;
+    
+    try {
+      await StatusBar.setStyle({ style: Style.Dark }); 
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setBackgroundColor({ color: '#000000' });
+    }
+    
+    catch (error) {
+      console.error('Error configuring status bar:', error);
+    }
   }
 }

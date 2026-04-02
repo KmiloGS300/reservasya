@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReservationService } from 'src/app/services/reservation';
+import { ReservationService } from 'src/app/services/reservation.service';
 
 @Component({
   selector: 'app-customer-data',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ReservationService, Reservation } from 'src/app/services/reservation';
+import { ReservationService, Reservation } from 'src/app/services/reservation.service';
 
 @Component({
   selector: 'app-admin',

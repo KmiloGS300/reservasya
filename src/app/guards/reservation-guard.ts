@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { ReservationService } from '../services/reservation';
+import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { ReservationService } from '../services/reservation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,28 +12,48 @@ export class ReservationGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
 
     const r = this.reservationService.getReservation();
+    const path = route.routeConfig?.path;
 
-    // 🔒 Validaciones por pasos
-
-    // ❌ Si no hay fecha → no puede seguir
-    if (!r.date) {
-      this.router.navigate(['/pages/calendar']);
-      return false;
+    // ⏰ time-slots solo necesita fecha
+    if (path === 'time-slots') {
+      if (!r.date) {
+        this.router.navigate(['/pages/calendar']);
+        return false;
+      }
+      return true;
     }
 
-    // ❌ Si no hay hora → no puede ir más allá
-    if (!r.time) {
-      this.router.navigate(['/pages/time-slots']);
-      return false;
+    // 👤 customer-data necesita fecha + hora
+    if (path === 'customer-data') {
+      if (!r.date) {
+        this.router.navigate(['/pages/calendar']);
+        return false;
+      }
+      if (!r.time) {
+        this.router.navigate(['/pages/time-slots']);
+        return false;
+      }
+      return true;
     }
 
-    // ❌ Si no hay datos del cliente → no puede confirmar
-    if (!r.customerName || !r.phone || !r.people) {
-      this.router.navigate(['/pages/customer-data']);
-      return false;
+    // ✅ confirmation necesita todo
+    if (path === 'confirmation') {
+      if (!r.date) {
+        this.router.navigate(['/pages/calendar']);
+        return false;
+      }
+      if (!r.time) {
+        this.router.navigate(['/pages/time-slots']);
+        return false;
+      }
+      if (!r.customerName || !r.phone || !r.people) {
+        this.router.navigate(['/pages/customer-data']);
+        return false;
+      }
+      return true;
     }
 
     return true;
