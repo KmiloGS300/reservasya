@@ -13,6 +13,13 @@ export class AntiAuthGuard implements CanActivate {
 
     const logged = await this.auth.isLogged();
 
+    const url = this.router.url;
+
+    // 👇 permitir acceso a register siempre
+    if (url.includes('register')) {
+      return true;
+    }
+
     if (logged) {
       this.router.navigate(['/pages/home-reservasya']);
       return false;

@@ -1,0 +1,54 @@
+<ng-container *ngIf="!ocultarNavbar">
+
+  <div class="navbar-wrapper">
+
+    <ion-toolbar class="custom-toolbar">
+
+      <!-- 🔙 IZQUIERDA -->
+      <ion-buttons slot="start">
+        <ion-button class="btn-volver" (click)="goBack()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+          <span class="btn-text">Volver</span>
+        </ion-button>
+      </ion-buttons>
+
+      <!-- 🔷 CENTRO -->
+      <ion-title>ReservasYa</ion-title>
+
+      <!-- 🔥 DERECHA -->
+      <ion-buttons slot="end">
+        <ion-button class="btn-reservar" (click)="goToReservar()">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span class="btn-text">Reservar</span>
+        </ion-button>
+
+        <ion-button class="btn-gestionar" (click)="goToGestionar()">
+          <ion-icon name="list-outline"></ion-icon>
+          <span class="btn-text">Gestionar</span>
+        </ion-button>
+      </ion-buttons>
+
+    </ion-toolbar>
+
+  </div>
+
+</ng-container>
+
+<!-- 🔵 MODAL LOGOUT -->
+<div class="confirm-modal" *ngIf="showLogoutModal">
+  <div class="modal-card">
+    <div class="check">❓</div>
+    <h2>Cerrar sesión</h2>
+    <p>¿Seguro que deseas salir?</p>
+
+    <div class="modal-buttons">
+      <ion-button fill="outline" (click)="cancelLogout()">
+        Cancelar
+      </ion-button>
+
+      <ion-button color="danger" (click)="confirmLogout()">
+        Sí, salir
+      </ion-button>
+    </div>
+  </div>
+</div>

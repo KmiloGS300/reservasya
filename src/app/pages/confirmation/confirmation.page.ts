@@ -34,13 +34,20 @@ export class ConfirmationPage implements OnInit {
   formatDate(date: string): string {
     if (!date) return '';
 
-    const d = new Date(date);
+    // 🔥 Quitar la hora si viene tipo ISO
+    const cleanDate = date.split('T')[0];
 
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
+    const parts = cleanDate.split('-');
 
-    return `${day}/${month}/${year}`;
+    if (parts.length === 3) {
+      const year = parts[0];
+      const month = parts[1].padStart(2, '0');
+      const day = parts[2].padStart(2, '0');
+
+      return `${day}/${month}/${year}`;
+    }
+
+    return cleanDate;
   }
 
   // 🔥 VALIDAR DATOS COMPLETOS

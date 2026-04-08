@@ -8,12 +8,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [AntiAuthGuard]
+    canActivate: [AntiAuthGuard] // ✔ aquí sí
   },
   {
     path: 'register',
-    component: RegisterComponent,
-    canActivate: [AntiAuthGuard]
+    component: RegisterComponent
+    // ❌ SIN guard
   },
   {
     path: '',

@@ -1,0 +1,146 @@
+/* 🔥 NAVBAR GLOBAL */
+.navbar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+
+  backdrop-filter: blur(12px);
+}
+
+/* 🔷 TOOLBAR */
+.custom-toolbar {
+  --background: rgba(255, 255, 255, 0.8);
+  --color: #0f172a;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* 🔷 TÍTULO CENTRADO */
+ion-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 🔷 BOTONES BASE */
+ion-button {
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* 🔷 TEXTO */
+.btn-text {
+  margin-left: 4px;
+}
+
+/* 🔷 ICONOS */
+ion-icon {
+  font-size: 18px;
+}
+
+/* 🔷 VOLVER (GRIS) */
+.btn-volver {
+  --background: rgba(100, 116, 139, 0.15);
+  --color: #334155;
+}
+
+/* 🔷 RESERVAR (AZUL) */
+.btn-reservar {
+  --background: rgba(59, 130, 246, 0.15);
+  --color: #2563eb;
+}
+
+/* 🔷 GESTIONAR (MORADO) */
+.btn-gestionar {
+  --background: rgba(139, 92, 246, 0.15);
+  --color: #7c3aed;
+}
+
+/* 🔥 HOVER */
+.btn-volver:hover,
+.btn-reservar:hover,
+.btn-gestionar:hover {
+  transform: translateY(-2px);
+}
+
+/* 🔷 RESPONSIVE */
+@media (max-width: 480px) {
+  .btn-text {
+    display: none;
+  }
+}
+
+/* 🔵 MODAL */
+.confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  width: 90%;
+  max-width: 320px;
+
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+.check {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.modal-card h2 {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.modal-card p {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ion-content {
+  margin-top: 70px;
+}
