@@ -48,7 +48,7 @@ export class TimeSlotsPage implements OnInit {
 
     // 🔴 HORAS OCUPADAS (BD)
     this.reservedTimes = reservations
-      .filter((r: any) => r.date === this.selectedDate)
+      .filter((r: any) => this.formatDate(r.date) === this.formatDate(this.selectedDate))
       .map((r: any) => r.time);
 
     // 🔴 HORAS PASADAS (SI ES HOY)
@@ -62,6 +62,13 @@ export class TimeSlotsPage implements OnInit {
         return this.parseHour(time) <= currentHour;
       });
     }
+  }
+
+  formatDate(date: string): string {
+    if (!date) return '';
+
+    // 🔥 Quitar hora si viene tipo ISO
+    return date.split('T')[0];
   }
 
   generateTimeSlots(): string[] {

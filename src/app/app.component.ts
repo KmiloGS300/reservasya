@@ -25,11 +25,20 @@ export class AppComponent {
     // 👇 Controlar cuándo mostrar el navbar
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const url = event.url;
 
-        const rutasSinNavbar = ['login', 'register', 'home'];
+        const url = event.urlAfterRedirects;
 
-        this.mostrarNavbar = !rutasSinNavbar.some(ruta => url.includes(ruta));
+        // 🔥 rutas EXACTAS donde NO quieres navbar
+        const rutasSinNavbar = [
+          '/home',
+          '/auth/login',
+          '/auth/register'
+        ];
+
+        // 🔥 limpiar parámetros si existen (?id=1)
+        const cleanUrl = url.split('?')[0];
+
+        this.mostrarNavbar = !rutasSinNavbar.includes(cleanUrl);
       }
     });
   }

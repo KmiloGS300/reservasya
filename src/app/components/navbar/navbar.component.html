@@ -4,28 +4,36 @@
 
     <ion-toolbar class="custom-toolbar">
 
-      <!-- 🔙 IZQUIERDA -->
-      <ion-buttons slot="start">
+      <!-- 🔙 VOLVER -->
+      <ion-buttons slot="start" *ngIf="!isHomeReservasYa">
         <ion-button class="btn-volver" (click)="goBack()">
           <ion-icon name="arrow-back-outline"></ion-icon>
           <span class="btn-text">Volver</span>
         </ion-button>
       </ion-buttons>
 
-      <!-- 🔷 CENTRO -->
+      <!-- 🔷 TÍTULO -->
       <ion-title>ReservasYa</ion-title>
 
       <!-- 🔥 DERECHA -->
       <ion-buttons slot="end">
-        <ion-button class="btn-reservar" (click)="goToReservar()">
+
+        <!-- 🏠 HOME -->
+        <ion-button *ngIf="isHomeReservasYa"
+                    class="logout-btn"
+                    (click)="handleLogout()">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <span class="btn-text">Salir</span>
+        </ion-button>
+
+        <!-- 📋 SOLO EN GESTIONAR -->
+        <ion-button *ngIf="isGestionar"
+                    class="btn-reservar"
+                    (click)="goToReservar()">
           <ion-icon name="calendar-outline"></ion-icon>
           <span class="btn-text">Reservar</span>
         </ion-button>
 
-        <ion-button class="btn-gestionar" (click)="goToGestionar()">
-          <ion-icon name="list-outline"></ion-icon>
-          <span class="btn-text">Gestionar</span>
-        </ion-button>
       </ion-buttons>
 
     </ion-toolbar>
@@ -33,6 +41,25 @@
   </div>
 
 </ng-container>
+
+<!-- 🔴 MODAL CAMBIO DE SECCIÓN -->
+<div class="confirm-modal" *ngIf="showConfirmNavModal">
+  <div class="modal-card">
+    <div class="check">⚠️</div>
+    <h2>Cambiar de sección</h2>
+    <p>¿Seguro que deseas ir a Reservar?</p>
+
+    <div class="modal-buttons">
+      <ion-button fill="outline" (click)="cancelNavigation()">
+        Cancelar
+      </ion-button>
+
+      <ion-button color="primary" (click)="confirmNavigation()">
+        Sí, continuar
+      </ion-button>
+    </div>
+  </div>
+</div>
 
 <!-- 🔵 MODAL LOGOUT -->
 <div class="confirm-modal" *ngIf="showLogoutModal">

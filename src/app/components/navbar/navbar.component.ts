@@ -11,10 +11,15 @@ import { AuthService } from '../../services/auth.service';
 export class NavbarComponent {
 
   ocultarNavbar = false;
-  isHomeReservasYa = false;
 
-  // 🔵 modal logout
-  showLogoutModal: boolean = false;
+  isHomeReservasYa = false;
+  isReservar = false;
+  isGestionar = false;
+
+  // 🔵 modales
+  showLogoutModal = false;
+  showConfirmNavModal = false;
+  nextRoute: string = '';
 
   constructor(
     private router: Router,
@@ -25,15 +30,34 @@ export class NavbarComponent {
 
         const url = event.urlAfterRedirects;
 
-        console.log('URL ACTUAL:', url); // 🔥 debug
+        console.log('URL ACTUAL:', url);
 
-        // ❌ ocultar navbar SOLO login/register
+        // 🔥 ocultar navbar
         this.ocultarNavbar =
-          url.startsWith('/auth/login') ||
-          url.startsWith('/auth/register');
+          url.includes('login') ||
+          url.includes('register') ||
+          url === '/home';
 
-        // 🔥 SOLO para home-reservasya
-        this.isHomeReservasYa = url.includes('/home-reservasya');
+        // 🔥 resetear estados
+        this.isHomeReservasYa = false;
+        this.isReservar = false;
+        this.isGestionar = false;
+
+        // 🔥 detectar rutas (ROBUSTO)
+        if (url.includes('home-reservasya')) {
+          this.isHomeReservasYa = true;
+        }
+
+        if (url.includes('calendar')) {
+          this.isReservar = true;
+        }
+
+        if (url.includes('manage-reservation')) {
+          this.isGestionar = true;
+        }
+
+        console.log('Reservar:', this.isReservar);
+        console.log('Gestionar:', this.isGestionar);
       }
     });
   }
@@ -43,16 +67,37 @@ export class NavbarComponent {
     window.history.back();
   }
 
-  // 🔥 navegación
+  // 🔥 IR A RESERVAR
   goToReservar() {
-    this.router.navigate(['/pages/calendar']);
+    this.nextRoute = '/pages/calendar';
+
+    // SOLO mostrar modal si vienes de gestionar
+    if (this.isGestionar) {
+      this.showConfirmNavModal = true;
+    } else {
+      this.router.navigateByUrl(this.nextRoute);
+    }
   }
 
+  // 🔥 (ya no lo usamos pero lo dejo por si luego lo necesitas)
   goToGestionar() {
-    this.router.navigate(['/pages/manage-reservation']);
+    this.router.navigateByUrl('/pages/manage-reservation');
   }
 
-  // 🔐 logout (solo en HOME RESERVASYA)
+  confirmNavigation() {
+    this.showConfirmNavModal = false;
+
+    setTimeout(() => {
+      this.router.navigateByUrl(this.nextRoute);
+      this.nextRoute = '';
+    }, 100);
+  }
+
+  cancelNavigation() {
+    this.showConfirmNavModal = false;
+  }
+
+  // 🔐 logout
   handleLogout() {
     this.showLogoutModal = true;
   }

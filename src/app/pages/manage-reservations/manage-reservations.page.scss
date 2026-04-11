@@ -1,79 +1,93 @@
-/* 🔥 FONDO */
+/* FONDO GENERAL */
 ion-content {
-  --background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: white;
+  --background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* 🔥 CONTENEDOR */
+/* CONTENEDOR */
 .container {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
 }
 
-/* 🔥 CARD */
+/* CARD PRINCIPAL */
 .card {
   width: 90%;
-  max-width: 400px;
-  padding: 20px;
+  max-width: 420px;
+  padding: 25px;
   border-radius: 20px;
+  background: #ffffff;
 
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* 🔥 TITULO */
+/* TITULO */
 .title {
-  font-size: 24px;
-  font-weight: bold;
   text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
 }
 
 .title span {
-  color: #38bdf8;
+  color: #3b82f6;
 }
 
-/* 🔥 SUBTITULO */
+/* SUBTITULO */
 .subtitle {
-  font-size: 14px;
   text-align: center;
-  color: #cbd5f5;
-  margin-bottom: 15px;
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
-/* 🔥 INPUT */
+/* INPUT */
 .input-item {
-  --background: rgba(255, 255, 255, 0.08);
+  --background: #f8fafc;
+  --color: #1e293b;
+
   border-radius: 12px;
   margin-bottom: 15px;
-  padding: 5px 10px;
-  color: white;
+
+  border: 1px solid #e2e8f0;
 }
 
-/* 🔥 LISTA */
+/* TEXTO INPUT */
+ion-input {
+  --color: #1e293b;
+}
+
+/* LISTA */
 .custom-list {
   background: transparent;
 }
 
-/* 🔥 ITEM */
+/* ITEM */
 .list-item {
-  --background: rgba(255, 255, 255, 0.05);
+  --background: #f8fafc;
+
   border-radius: 12px;
   margin-bottom: 10px;
-  color: white;
+
+  border: 1px solid #e2e8f0;
 }
 
-/* 🔥 TEXTO */
+/* TEXTO */
 .list-item h2 {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
 }
 
 .list-item p {
   font-size: 13px;
-  color: #cbd5f5;
+  color: #64748b;
+}
+
+/* EFECTO HOVER */
+.list-item:active {
+  transform: scale(0.98);
+  --background: #e2e8f0;
 }

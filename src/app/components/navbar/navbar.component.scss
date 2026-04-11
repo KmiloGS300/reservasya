@@ -78,6 +78,22 @@ ion-icon {
   }
 }
 
+/* 🔥 CENTRAR EL TÍTULO PERFECTO */
+ion-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: max-content;
+  z-index: 1;
+}
+
+/* 🔥 ASEGURAR QUE BOTONES NO LO MUEVAN */
+ion-buttons[slot="start"],
+ion-buttons[slot="end"] {
+  z-index: 2;
+}
+
 /* 🔵 MODAL */
 .confirm-modal {
   position: fixed;
@@ -143,4 +159,9 @@ ion-icon {
 
 ion-content {
   margin-top: 70px;
+}
+
+.logout-btn {
+  --background: rgba(239, 68, 68, 0.15);
+  --color: #ef4444;
 }

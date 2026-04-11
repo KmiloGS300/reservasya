@@ -7,21 +7,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class AntiAuthGuard implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   async canActivate(): Promise<boolean> {
 
-    const logged = await this.auth.isLogged();
+    const isLogged = await this.auth.isLogged();
 
-    const url = this.router.url;
-
-    // 👇 permitir acceso a register siempre
-    if (url.includes('register')) {
-      return true;
-    }
-
-    if (logged) {
-      this.router.navigate(['/pages/home-reservasya']);
+    if (isLogged) {
+      this.router.navigate(['/home-reservasya']);
       return false;
     }
 

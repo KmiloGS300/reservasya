@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { ReservationService, Reservation } from 'src/app/services/reservation.service';
+import { ReservationService } from 'src/app/services/reservation.service';
 
 @Component({
   selector: 'app-reservation-detail',
@@ -13,6 +12,9 @@ export class ReservationDetailPage {
 
   reserva: any;
 
+  // 🔴 control modal
+  showDeleteModal = false;
+
   constructor(
     private router: Router,
     private reservationService: ReservationService
@@ -21,19 +23,28 @@ export class ReservationDetailPage {
     this.reserva = nav?.extras.state?.['reserva'];
   }
 
-  editar() {
-    // luego lo conectamos con tu flujo
-    alert('Editar próximamente ✏️');
+  // 🔥 abrir modal
+  openDeleteModal() {
+    this.showDeleteModal = true;
   }
 
-  async eliminar() {
-    const confirm = window.confirm('¿Eliminar reserva?');
+  // ❌ cancelar
+  cancelDelete() {
+    this.showDeleteModal = false;
+  }
 
-    if (!confirm) return;
+  // ✅ confirmar eliminación
+  async confirmDelete() {
+
+    this.showDeleteModal = false;
 
     await this.reservationService.deleteReservation(this.reserva);
 
-    alert('Reserva eliminada ✅');
-    this.router.navigate(['/manage-reservations']);
+    // 🔥 redirección + actualización automática
+    this.router.navigateByUrl('/manage-reservations', { replaceUrl: true });
+
+    setTimeout(() => {
+      this.router.navigateByUrl('/pages/manage-reservation');
+    }, 100);
   }
 }

@@ -21,6 +21,27 @@ export class ManageReservationsPage implements OnInit {
   ) {}
 
   async ngOnInit() {
+    await this.loadReservas();
+  }
+
+  // 🔥 ESTA ES LA MAGIA
+  async ionViewWillEnter() {
+    await this.loadReservas();
+  }
+
+  formatDate(date: string): string {
+    if (!date) return '';
+
+    // 🔥 quitar hora si viene tipo ISO
+    const cleanDate = date.split('T')[0];
+
+    const [year, month, day] = cleanDate.split('-');
+
+    return `${day}/${month}/${year}`;
+  }
+
+  // 🔥 FUNCIÓN CENTRAL
+  async loadReservas() {
     this.reservas = await this.reservationService.getReservations();
     this.reservasFiltradas = this.reservas;
   }

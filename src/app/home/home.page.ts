@@ -13,7 +13,7 @@ export class HomePage {
   constructor(private router: Router) {}
 
   irLogin() {
-    this.router.navigate(['auth/login']);
+    this.router.navigate(['/auth/login']);
   }
 
 }

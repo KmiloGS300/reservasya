@@ -37,11 +37,8 @@
         <span class="value">{{ reserva?.email }}</span>
       </div>
 
-      <ion-button expand="block" class="btn-primary" (click)="editar()">
-        ✏️ Modificar
-      </ion-button>
-
-      <ion-button expand="block" color="danger" (click)="eliminar()">
+      <!-- 🔴 BOTÓN ELIMINAR -->
+      <ion-button expand="block" class="btn-danger" (click)="openDeleteModal()">
         🗑️ Eliminar
       </ion-button>
 
@@ -50,3 +47,22 @@
   </div>
 
 </ion-content>
+
+<!-- 🔴 MODAL ELIMINAR -->
+<div class="confirm-modal" *ngIf="showDeleteModal">
+  <div class="modal-card">
+    <div class="check">⚠️</div>
+    <h2>Eliminar reserva</h2>
+    <p>¿Seguro que deseas eliminar esta reserva?</p>
+
+    <div class="modal-buttons">
+      <ion-button fill="outline" (click)="cancelDelete()">
+        Cancelar
+      </ion-button>
+
+      <ion-button color="danger" (click)="confirmDelete()">
+        Sí, eliminar
+      </ion-button>
+    </div>
+  </div>
+</div>
