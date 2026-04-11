@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,7 @@ export class NavbarComponent {
 
   constructor(
     private router: Router,
+    private location: Location,
     private auth: AuthService
   ) {
     this.router.events.subscribe((event) => {
@@ -64,7 +66,30 @@ export class NavbarComponent {
 
   // 🔙 volver
   goBack() {
-    window.history.back();
+
+    const url = this.router.url;
+
+    const isSpecialPage =
+      url.includes('reservation-detail') ||
+      url.includes('manage-reservation');
+
+    if (isSpecialPage) {
+
+      // 🔥 INTENTA usar history real primero
+      this.location.back();
+
+      // 🔥 fallback por si el history está roto
+      setTimeout(() => {
+        if (this.router.url === url) {
+          this.router.navigate(['/home-reservasya'], { replaceUrl: true });
+        }
+      }, 100);
+
+    } else {
+      // ✅ comportamiento normal en toda la app
+      this.location.back();
+    }
+
   }
 
   // 🔥 IR A RESERVAR

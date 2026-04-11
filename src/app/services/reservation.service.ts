@@ -70,7 +70,7 @@ export class ReservationService {
 
       const newReservation: Reservation = {
         ...this.reservation,
-        id: new Date().getTime() // 🔥 ID único
+        id: new Date().getTime()
       };
 
       reservations.push(newReservation);
@@ -87,9 +87,22 @@ export class ReservationService {
     }
   }
 
-  // 📊 OBTENER TODAS
+  // 📊 OBTENER TODAS (🔥 AQUÍ VA EL SEED)
   async getReservations(): Promise<Reservation[]> {
-    return (await this._storage?.get('reservations')) || [];
+
+    let reservations = (await this._storage?.get('reservations')) || [];
+
+    // 🔥 SI NO HAY RESERVAS → CREAR DATOS DE PRUEBA
+    if (!reservations || reservations.length === 0) {
+
+      reservations = this.generateSeedReservations();
+
+      await this._storage?.set('reservations', reservations);
+
+      console.log('🌱 Seed de reservas generado');
+    }
+
+    return reservations;
   }
 
   // 🗑️ ELIMINAR
@@ -120,5 +133,44 @@ export class ReservationService {
       phone: '',
       email: ''
     };
+  }
+
+  // 🌱 GENERADOR DE RESERVAS (NO AFECTA NADA EXISTENTE)
+  private generateSeedReservations(): Reservation[] {
+
+    const names = [
+      'Juan Pérez', 'María Gómez', 'Carlos Ramírez', 'Laura Sánchez',
+      'Andrés Torres', 'Camila Ríos', 'Daniel Castro', 'Valentina López'
+    ];
+
+    const emails = [
+      'juanp@gmail.com', 'maria@hotmail.com', 'carlos@yahoo.com',
+      'laura@outlook.com', 'andres@gmail.com', 'camila@hotmail.com',
+      'daniel@yahoo.com', 'valentina@outlook.com'
+    ];
+
+    const times = [
+      '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM',
+      '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'
+    ];
+
+    const today = new Date();
+
+    return names.map((name, i) => {
+
+      const date = new Date();
+      date.setDate(today.getDate() + (i % 3)); // hoy + próximos días
+
+      return {
+        id: Date.now() + i,
+        date: date.toISOString().split('T')[0],
+        time: times[i], // 🔥 SIN REPETIR HORAS
+        table: null,
+        people: Math.floor(Math.random() * 5) + 1,
+        customerName: name,
+        phone: '3' + Math.floor(100000000 + Math.random() * 900000000),
+        email: emails[i]
+      };
+    });
   }
 }
