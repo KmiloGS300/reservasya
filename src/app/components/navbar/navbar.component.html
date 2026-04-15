@@ -4,8 +4,8 @@
 
     <ion-toolbar class="custom-toolbar">
 
-      <!-- 🔙 VOLVER -->
-      <ion-buttons slot="start" *ngIf="!isHomeReservasYa">
+      <!-- 🔙 VOLVER (NO en HOME NI ADMIN) -->
+      <ion-buttons slot="start" *ngIf="!isHomeReservasYa && !isAdmin && !isDetail">
         <ion-button class="btn-volver" (click)="goBack()">
           <ion-icon name="arrow-back-outline"></ion-icon>
           <span class="btn-text">Volver</span>
@@ -18,7 +18,7 @@
       <!-- 🔥 DERECHA -->
       <ion-buttons slot="end">
 
-        <!-- 🏠 HOME -->
+        <!-- 🏠 HOME → SOLO LOGOUT -->
         <ion-button *ngIf="isHomeReservasYa"
                     class="logout-btn"
                     (click)="handleLogout()">
@@ -26,7 +26,15 @@
           <span class="btn-text">Salir</span>
         </ion-button>
 
-        <!-- 📋 SOLO EN GESTIONAR -->
+        <!-- 🔥 ADMIN → SOLO LOGOUT -->
+        <ion-button *ngIf="isAdmin"
+                    class="logout-btn"
+                    (click)="handleLogout()">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <span class="btn-text">Salir</span>
+        </ion-button> 
+
+        <!-- 📋 GESTIONAR → SOLO RESERVAR -->
         <ion-button *ngIf="isGestionar"
                     class="btn-reservar"
                     (click)="goToReservar()">
@@ -42,7 +50,7 @@
 
 </ng-container>
 
-<!-- 🔴 MODAL CAMBIO DE SECCIÓN -->
+<!-- 🔴 MODAL CAMBIO -->
 <div class="confirm-modal" *ngIf="showConfirmNavModal">
   <div class="modal-card">
     <div class="check">⚠️</div>

@@ -4,17 +4,27 @@
 
     <div class="card">
 
-      <h1 class="title">Reservas</h1>
+      <h1 class="title">Admin<span>Panel</span></h1>
+      <p class="subtitle">Gestiona todas las reservas</p>
 
-      <div class="reservation-card" *ngFor="let reservation of reservations">
-        
-        <h2>{{ reservation.customerName }}</h2>
+      <div 
+        class="row" 
+        *ngFor="let r of reservas">
 
-        <p>{{ reservation.date }} - {{ reservation.time }}</p>
+        <div class="info">
+          <strong>{{ r.customerName }}</strong>
+          <p>{{ r.date }} - {{ r.time }}</p>
+        </div>
 
-        <p>Personas: {{ reservation.people }}</p>
+        <div class="actions">
+          <ion-button size="small" (click)="editar(r)">
+            ✏️
+          </ion-button>
 
-        <p>Tel: {{ reservation.phone }}</p>
+          <ion-button size="small" color="danger" (click)="eliminar(r)">
+            🗑️
+          </ion-button>
+        </div>
 
       </div>
 
@@ -23,3 +33,51 @@
   </div>
 
 </ion-content>
+
+<!-- 🔥 MODAL EDITAR -->
+<!-- 🔥 MODAL EDITAR -->
+<div class="confirm-modal" *ngIf="showEditModal">
+  <div class="modal-card">
+
+    <div class="check">✏️</div>
+    <h2>Editar reserva</h2>
+
+    <ion-item class="input-item">
+      <ion-input [(ngModel)]="selectedReserva.customerName" placeholder="Nombre"></ion-input>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-input [(ngModel)]="selectedReserva.phone" placeholder="Teléfono"></ion-input>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-input [(ngModel)]="selectedReserva.email" placeholder="Email"></ion-input>
+    </ion-item>
+
+    <ion-item class="input-item">
+      <ion-input type="number" [(ngModel)]="selectedReserva.people" placeholder="Personas"></ion-input>
+    </ion-item>
+
+    <div class="modal-buttons">
+      <ion-button fill="outline" (click)="cerrarModal()">
+        Cancelar
+      </ion-button>
+
+      <ion-button class="btn-primary" (click)="guardarCambios()">
+        Guardar
+      </ion-button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ✅ MODAL ÉXITO -->
+<div class="success-modal" *ngIf="showSuccessModal">
+  <div class="success-card">
+
+    <div class="check">✅</div>
+    <h2>Actualización exitosa</h2>
+    <p>La reserva fue modificada correctamente</p>
+
+  </div>
+</div>

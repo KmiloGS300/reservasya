@@ -105,6 +105,27 @@ export class ReservationService {
     return reservations;
   }
 
+  async updateReservation(updated: Reservation) {
+    try {
+
+      let reservations = (await this._storage?.get('reservations')) || [];
+
+      reservations = reservations.map((r: Reservation) => {
+
+        if (r.id && updated.id && r.id === updated.id) {
+          return { ...updated };
+        }
+
+        return r;
+      });
+
+      await this._storage?.set('reservations', reservations);
+
+    } catch (err) {
+      console.error('Error actualizando reserva:', err);
+    }
+  }
+
   // 🗑️ ELIMINAR
   async deleteReservation(reserva: Reservation) {
     try {

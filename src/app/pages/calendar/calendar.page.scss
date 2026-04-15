@@ -6,10 +6,12 @@ ion-content {
 
 /* CONTENEDOR */
 .container {
-  height: 100%;
+  min-height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* 🔥 CAMBIO CLAVE */
+  padding-top: 90px; /* 🔥 espacio para navbar */
+  padding-bottom: 20px;
 }
 
 /* CARD */

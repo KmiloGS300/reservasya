@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 // 🔒 Guards
 import { AuthGuard } from '../guards/auth-guard';
 import { ReservationGuard } from '../guards/reservation-guard';
+import { AdminGuard } from '../guards/admin-guard';
 
 const routes: Routes = [
 
@@ -61,6 +62,12 @@ const routes: Routes = [
     path: 'reservation-detail',
     loadChildren: () => import('./reservation-detail/reservation-detail.module').then(m => m.ReservationDetailPageModule),
     canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminPageModule),
+    canActivate: [AdminGuard]
   },
 
   // 🔁 REDIRECCIÓN POR DEFECTO

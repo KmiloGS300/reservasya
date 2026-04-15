@@ -71,9 +71,19 @@ export class LoginComponent {
         this.showSuccessModal = true;
         this.cd.detectChanges();
 
+        // 🔥 OBTENER USUARIO
+        const user = await this.auth.getUser();
+
         setTimeout(() => {
           this.showSuccessModal = false;
-          this.router.navigate(['/pages/home-reservasya']);
+
+          // 🔥 REDIRECCIÓN SEGÚN ROL
+          if (user?.role === 'admin') {
+            this.router.navigate(['/pages/admin']);
+          } else {
+            this.router.navigate(['/pages/home-reservasya']);
+          }
+
         }, 2000);
 
       } else {

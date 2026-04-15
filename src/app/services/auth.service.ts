@@ -30,7 +30,17 @@ export class AuthService {
     return true;
   }
 
+  // 🔥 LOGIN MODIFICADO (SIN ROMPER LO DEMÁS)
   async login(email: string, password: string): Promise<boolean> {
+
+    // 🔴 ADMIN FIJO
+    if (email === 'admin@reservasya.com' && password === 'admin123') {
+      await this._storage?.set('session', {
+        email,
+        role: 'admin'
+      });
+      return true;
+    }
 
     const users = (await this._storage?.get('users')) || [];
 
@@ -39,7 +49,10 @@ export class AuthService {
     );
 
     if (user) {
-      await this._storage?.set('session', user);
+      await this._storage?.set('session', {
+        ...user,
+        role: 'user' // 🔥 no rompe nada, solo añade info
+      });
       return true;
     }
 
@@ -57,5 +70,10 @@ export class AuthService {
 
   async getUser() {
     return await this._storage?.get('session');
+  }
+
+  async isAdmin(): Promise<boolean> {
+    const session = await this._storage?.get('session');
+    return session?.role === 'admin';
   }
 }

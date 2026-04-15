@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +15,12 @@ export class NavbarComponent {
   isHomeReservasYa = false;
   isReservar = false;
   isGestionar = false;
+  isAdmin = false;
+  isDetail = false; // 🔥 NUEVO (IMPORTANTE)
+
+  // 🔥 navegación
+  previousUrl: string = '';
+  currentUrl: string = '';
 
   // 🔵 modales
   showLogoutModal = false;
@@ -24,15 +29,18 @@ export class NavbarComponent {
 
   constructor(
     private router: Router,
-    private location: Location,
     private auth: AuthService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
 
-        const url = event.urlAfterRedirects;
+        this.previousUrl = this.currentUrl;
+        this.currentUrl = event.urlAfterRedirects;
 
-        console.log('URL ACTUAL:', url);
+        const url = this.currentUrl;
+
+        console.log('URL:', url);
+        console.log('PREV:', this.previousUrl);
 
         // 🔥 ocultar navbar
         this.ocultarNavbar =
@@ -40,73 +48,72 @@ export class NavbarComponent {
           url.includes('register') ||
           url === '/home';
 
-        // 🔥 resetear estados
+        // 🔥 reset estados
         this.isHomeReservasYa = false;
         this.isReservar = false;
         this.isGestionar = false;
+        this.isAdmin = false;
+        this.isDetail = false;
 
-        // 🔥 detectar rutas (ROBUSTO)
-        if (url.includes('home-reservasya')) {
-          this.isHomeReservasYa = true;
-        }
-
-        if (url.includes('calendar')) {
-          this.isReservar = true;
-        }
-
-        if (url.includes('manage-reservation')) {
-          this.isGestionar = true;
-        }
-
-        console.log('Reservar:', this.isReservar);
-        console.log('Gestionar:', this.isGestionar);
+        // 🔥 detección de rutas
+        if (url.includes('home-reservasya')) this.isHomeReservasYa = true;
+        if (url.includes('calendar')) this.isReservar = true;
+        if (url.includes('manage-reservation')) this.isGestionar = true;
+        if (url.includes('admin')) this.isAdmin = true;
+        if (url.includes('reservation-detail')) this.isDetail = true;
       }
     });
   }
 
-  // 🔙 volver
+  // 🔙 VOLVER (lo dejamos intacto por si lo usas en otras vistas)
   goBack() {
 
-    const url = this.router.url;
+    console.log('BACK desde:', this.currentUrl);
+    console.log('IR A:', this.previousUrl);
 
-    const isSpecialPage =
-      url.includes('reservation-detail') ||
-      url.includes('manage-reservation');
-
-    if (isSpecialPage) {
-
-      // 🔥 INTENTA usar history real primero
-      this.location.back();
-
-      // 🔥 fallback por si el history está roto
-      setTimeout(() => {
-        if (this.router.url === url) {
-          this.router.navigate(['/home-reservasya'], { replaceUrl: true });
-        }
-      }, 100);
-
-    } else {
-      // ✅ comportamiento normal en toda la app
-      this.location.back();
+    // DETAIL → MANAGE
+    if (this.currentUrl.includes('reservation-detail')) {
+      this.router.navigate(['/pages/manage-reservation'], { replaceUrl: true });
+      return;
     }
 
+    // SI VIENE DE ADMIN
+    if (this.previousUrl.includes('admin')) {
+      this.router.navigate(['/pages/admin'], { replaceUrl: true });
+      return;
+    }
+
+    // MANAGE → HOME
+    if (this.currentUrl.includes('manage-reservation')) {
+      this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
+      return;
+    }
+
+    // CALENDAR
+    if (this.currentUrl.includes('calendar')) {
+
+      if (this.previousUrl.includes('admin')) {
+        this.router.navigate(['/pages/admin'], { replaceUrl: true });
+        return;
+      }
+
+      this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
+      return;
+    }
+
+    // DEFAULT
+    this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
   }
 
   // 🔥 IR A RESERVAR
   goToReservar() {
     this.nextRoute = '/pages/calendar';
 
-    // SOLO mostrar modal si vienes de gestionar
     if (this.isGestionar) {
       this.showConfirmNavModal = true;
     } else {
       this.router.navigateByUrl(this.nextRoute);
     }
-  }
-
-  // 🔥 (ya no lo usamos pero lo dejo por si luego lo necesitas)
-  goToGestionar() {
-    this.router.navigateByUrl('/pages/manage-reservation');
   }
 
   confirmNavigation() {
