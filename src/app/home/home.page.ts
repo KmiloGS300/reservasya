@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonHeader } from "@ionic/angular/standalone";
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,12 +8,19 @@ import { IonHeader } from "@ionic/angular/standalone";
   styleUrls: ['home.page.scss'],
   standalone: false
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
-  irLogin() {
-    this.router.navigate(['/auth/login']);
+  async ngOnInit() {
+    // 🔥 BORRA SESIÓN SIEMPRE
+    await this.auth.logout();
   }
 
+  irLogin() {
+    this.router.navigate(['/auth/login'], { replaceUrl: true });
+  }
 }

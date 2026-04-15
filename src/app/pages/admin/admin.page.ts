@@ -17,67 +17,83 @@ export class AdminPage implements OnInit {
 
   // 🔥 MODAL ÉXITO
   showSuccessModal: boolean = false;
+  successMessage: string = ''; // ✅ NUEVO
+
+  // 🔥 MODAL ELIMINAR
+  showDeleteModal: boolean = false;
+  selectedToDelete: Reservation | null = null;
 
   constructor(private reservationService: ReservationService) {}
 
-  // 🔥 AL INICIAR
   async ngOnInit() {
     await this.loadReservas();
   }
 
-  // 🔥 CUANDO REGRESAS A LA VISTA
   async ionViewWillEnter() {
     await this.loadReservas();
   }
 
-  // 🔥 CARGAR RESERVAS
   async loadReservas() {
     this.reservas = await this.reservationService.getReservations();
   }
 
-  // 🔥 EDITAR
+  // ✏️ EDITAR
   editar(reserva: Reservation) {
-    this.selectedReserva = { ...reserva }; // copia segura
+    this.selectedReserva = { ...reserva };
     this.showEditModal = true;
   }
 
-  // 🔥 CERRAR MODAL
   cerrarModal() {
     this.showEditModal = false;
   }
 
-  // 🔥 GUARDAR CAMBIOS
   async guardarCambios() {
 
     if (!this.selectedReserva || !this.selectedReserva.id) return;
 
     await this.reservationService.updateReservation(this.selectedReserva);
 
-    // 🔥 cerrar modal edición
     this.showEditModal = false;
 
-    // 🔥 mostrar éxito
+    // 🔥 MENSAJE DINÁMICO
+    this.successMessage = 'La reserva fue modificada correctamente';
     this.showSuccessModal = true;
 
-    // 🔥 recargar lista
     await this.loadReservas();
 
-    // 🔥 ocultar modal éxito
     setTimeout(() => {
       this.showSuccessModal = false;
     }, 2000);
   }
 
-  // 🔥 ELIMINAR
-  async eliminar(reserva: Reservation) {
+  // 🗑️ ELIMINAR (ABRE MODAL)
+  eliminar(reserva: Reservation) {
+    this.selectedToDelete = reserva;
+    this.showDeleteModal = true;
+  }
 
-    const confirmDelete = window.confirm('¿Eliminar reserva?');
+  cancelDelete() {
+    this.showDeleteModal = false;
+    this.selectedToDelete = null;
+  }
 
-    if (!confirmDelete) return;
+  async confirmDelete() {
 
-    await this.reservationService.deleteReservation(reserva);
+    if (!this.selectedToDelete) return;
 
-    // 🔥 actualizar lista
+    await this.reservationService.deleteReservation(this.selectedToDelete);
+
+    this.showDeleteModal = false;
+    this.selectedToDelete = null;
+
     await this.loadReservas();
+
+    // 🔥 MENSAJE DINÁMICO
+    this.successMessage = 'La reserva fue eliminada correctamente';
+    this.showSuccessModal = true;
+
+    setTimeout(() => {
+      this.showSuccessModal = false;
+    }, 2000);
   }
 }

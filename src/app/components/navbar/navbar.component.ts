@@ -16,13 +16,11 @@ export class NavbarComponent {
   isReservar = false;
   isGestionar = false;
   isAdmin = false;
-  isDetail = false; // 🔥 NUEVO (IMPORTANTE)
+  isDetail = false;
 
-  // 🔥 navegación
   previousUrl: string = '';
   currentUrl: string = '';
 
-  // 🔵 modales
   showLogoutModal = false;
   showConfirmNavModal = false;
   nextRoute: string = '';
@@ -31,65 +29,64 @@ export class NavbarComponent {
     private router: Router,
     private auth: AuthService
   ) {
+
+    // 🔥 DETECTAR RUTA DESDE EL INICIO (FIX CLAVE)
+    this.currentUrl = this.router.url;
+    this.setRouteState(this.currentUrl);
+
+    // 🔥 ESCUCHAR CAMBIOS DE RUTA
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
 
         this.previousUrl = this.currentUrl;
         this.currentUrl = event.urlAfterRedirects;
 
-        const url = this.currentUrl;
-
-        console.log('URL:', url);
-        console.log('PREV:', this.previousUrl);
-
-        // 🔥 ocultar navbar
-        this.ocultarNavbar =
-          url.includes('login') ||
-          url.includes('register') ||
-          url === '/home';
-
-        // 🔥 reset estados
-        this.isHomeReservasYa = false;
-        this.isReservar = false;
-        this.isGestionar = false;
-        this.isAdmin = false;
-        this.isDetail = false;
-
-        // 🔥 detección de rutas
-        if (url.includes('home-reservasya')) this.isHomeReservasYa = true;
-        if (url.includes('calendar')) this.isReservar = true;
-        if (url.includes('manage-reservation')) this.isGestionar = true;
-        if (url.includes('admin')) this.isAdmin = true;
-        if (url.includes('reservation-detail')) this.isDetail = true;
+        this.setRouteState(this.currentUrl);
       }
     });
   }
 
-  // 🔙 VOLVER (lo dejamos intacto por si lo usas en otras vistas)
+  // 🔥 NUEVO MÉTODO CENTRALIZADO
+  setRouteState(url: string) {
+
+    this.ocultarNavbar =
+      url.includes('login') ||
+      url.includes('register') ||
+      url === '/home';
+
+    this.isHomeReservasYa = false;
+    this.isReservar = false;
+    this.isGestionar = false;
+    this.isAdmin = false;
+    this.isDetail = false;
+
+    if (url.includes('home-reservasya')) this.isHomeReservasYa = true;
+    if (url.includes('calendar')) this.isReservar = true;
+    if (url.includes('manage-reservation')) this.isGestionar = true;
+
+    // 🔥 FIX ADMIN DEFINITIVO
+    this.isAdmin = url.startsWith('/pages/admin');
+
+    if (url.includes('reservation-detail')) this.isDetail = true;
+  }
+
   goBack() {
 
-    console.log('BACK desde:', this.currentUrl);
-    console.log('IR A:', this.previousUrl);
-
-    // DETAIL → MANAGE
     if (this.currentUrl.includes('reservation-detail')) {
       this.router.navigate(['/pages/manage-reservation'], { replaceUrl: true });
       return;
     }
 
-    // SI VIENE DE ADMIN
     if (this.previousUrl.includes('admin')) {
       this.router.navigate(['/pages/admin'], { replaceUrl: true });
       return;
     }
 
-    // MANAGE → HOME
     if (this.currentUrl.includes('manage-reservation')) {
       this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
       return;
     }
 
-    // CALENDAR
     if (this.currentUrl.includes('calendar')) {
 
       if (this.previousUrl.includes('admin')) {
@@ -101,11 +98,9 @@ export class NavbarComponent {
       return;
     }
 
-    // DEFAULT
     this.router.navigate(['/pages/home-reservasya'], { replaceUrl: true });
   }
 
-  // 🔥 IR A RESERVAR
   goToReservar() {
     this.nextRoute = '/pages/calendar';
 
@@ -129,7 +124,6 @@ export class NavbarComponent {
     this.showConfirmNavModal = false;
   }
 
-  // 🔐 logout
   handleLogout() {
     this.showLogoutModal = true;
   }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   email: string = '';
   password: string = '';
@@ -30,6 +30,25 @@ export class LoginComponent {
     private cd: ChangeDetectorRef,
     private auth: AuthService
   ) {}
+
+  // 🔥 SE EJECUTA AL CREAR COMPONENTE
+  ngOnInit() {
+    this.resetForm();
+  }
+
+  // 🔥 CLAVE EN IONIC (cada vez que entras al login)
+  ionViewWillEnter() {
+    this.resetForm();
+  }
+
+  // 🔥 LIMPIAR FORMULARIO
+  resetForm() {
+    this.email = '';
+    this.password = '';
+    this.emailError = '';
+    this.passwordError = '';
+    this.showPassword = false;
+  }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -71,13 +90,11 @@ export class LoginComponent {
         this.showSuccessModal = true;
         this.cd.detectChanges();
 
-        // 🔥 OBTENER USUARIO
         const user = await this.auth.getUser();
 
         setTimeout(() => {
           this.showSuccessModal = false;
 
-          // 🔥 REDIRECCIÓN SEGÚN ROL
           if (user?.role === 'admin') {
             this.router.navigate(['/pages/admin']);
           } else {
@@ -102,8 +119,7 @@ export class LoginComponent {
 
     setTimeout(() => {
       this.showFailModal = false;
-      this.email = '';
-      this.password = '';
+      this.resetForm(); // 🔥 ahora usa la función
     }, 2000);
   }
 

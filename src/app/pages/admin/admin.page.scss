@@ -9,10 +9,10 @@ ion-content {
   min-height: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 🔥 CAMBIO CLAVE */
-  padding-top: 90px; /* 🔥 espacio para navbar */
+  align-items: flex-start;
+  padding-top: 90px;
   padding-bottom: 20px;
-} 
+}
 
 /* 🔷 CARD PRINCIPAL */
 .card {
@@ -43,7 +43,7 @@ ion-content {
   margin-bottom: 25px;
 }
 
-/* 🔥 LISTA DE RESERVAS */
+/* 🔥 LISTA */
 .row {
   display: flex;
   justify-content: space-between;
@@ -52,22 +52,15 @@ ion-content {
   border-radius: 12px;
   margin-bottom: 10px;
   background: #f8fafc;
-  transition: 0.2s;
   border: 1px solid #e2e8f0;
 }
 
-/* 🔥 HOVER */
 .row:hover {
   background: #eef2ff;
   transform: scale(1.01);
 }
 
 /* 🔷 INFO */
-.info {
-  display: flex;
-  flex-direction: column;
-}
-
 .info strong {
   font-size: 15px;
   color: #1e293b;
@@ -76,7 +69,6 @@ ion-content {
 .info p {
   font-size: 13px;
   color: #64748b;
-  margin-top: 3px;
 }
 
 /* 🔷 BOTONES */
@@ -102,7 +94,7 @@ ion-content {
   color: #dc2626;
 }
 
-/* 🔥 INPUTS MODAL */
+/* 🔥 INPUTS */
 .input-item {
   margin-bottom: 12px;
   --background: #f1f5f9;
@@ -110,17 +102,15 @@ ion-content {
   --color: #1e293b;
 }
 
-/* 🔥 TEXTO INPUT */
 ion-input {
   color: #1e293b !important;
 }
 
-/* 🔥 PLACEHOLDER */
 ion-input::placeholder {
   color: #94a3b8 !important;
 }
 
-/* 🔥 MODAL GENERAL */
+/* 🔥 MODALES */
 .confirm-modal,
 .success-modal {
   position: fixed;
@@ -148,13 +138,31 @@ ion-input::placeholder {
   animation: fadeIn 0.25s ease;
 }
 
+/* 🔥 🔥 FIX IMPORTANTE 🔥 🔥 */
+.modal-card h2,
+.modal-card p {
+  color: #1e293b;  /* 👈 AQUÍ ESTABA EL PROBLEMA */
+}
+
+/* 🔥 TEXTO ÉXITO */
+.success-card h2 {
+  font-size: 18px;
+  margin-top: 5px;
+  color: #1e293b;
+}
+
+.success-card p {
+  font-size: 14px;
+  color: #64748b;
+}
+
 /* 🔷 ICONO */
 .check {
   font-size: 42px;
   margin-bottom: 10px;
 }
 
-/* 🔷 BOTONES MODAL */
+/* 🔷 BOTONES */
 .modal-buttons {
   display: flex;
   justify-content: center;
@@ -167,17 +175,6 @@ ion-input::placeholder {
   --background: #3b82f6;
   --border-radius: 12px;
   font-weight: 600;
-}
-
-/* 🔥 TEXTO MODAL */
-.success-card h2 {
-  font-size: 18px;
-  margin-top: 5px;
-}
-
-.success-card p {
-  font-size: 14px;
-  color: #64748b;
 }
 
 /* 🔥 ANIMACIÓN */
